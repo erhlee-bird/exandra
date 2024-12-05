@@ -462,10 +462,7 @@ defmodule Exandra do
     #
     # We remove keyspace here so that Xandra doesn't fail to connect in the case
     # that the specified keyspace doesn't exist.
-    allowed_opts =
-      Xandra.start_link_opts_schema()
-      |> Keyword.keys()
-      |> Keyword.drop([:keyspace])
+    allowed_opts = Keyword.drop(Xandra.start_link_opts_schema(), [:keyspace])
 
     {:ok, conn} =
       @xandra_mod.start_link(Keyword.take(opts, allowed_opts))
