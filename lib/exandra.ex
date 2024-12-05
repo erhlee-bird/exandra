@@ -459,7 +459,13 @@ defmodule Exandra do
     Application.ensure_all_started(:exandra)
 
     # Downselect from the list of options that Xandra supports.
-    allowed_opts = Xandra.start_link_opts_schema() |> Keyword.keys()
+    #
+    # We remove keyspace here so that Xandra doesn't fail to connect in the case
+    # that the specified keyspace doesn't exist.
+    allowed_opts =
+      Xandra.start_link_opts_schema()
+      |> Keyword.keys()
+      |> Keyword.drop(:keyspace)
 
     {:ok, conn} =
       @xandra_mod.start_link(Keyword.take(opts, allowed_opts))
