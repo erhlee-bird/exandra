@@ -458,8 +458,11 @@ defmodule Exandra do
     keyspace = Keyword.fetch!(opts, :keyspace)
     Application.ensure_all_started(:exandra)
 
+    # Downselect from the list of options that Xandra supports.
+    allowed_opts = Xandra.start_link_opts_schema() |> Keyword.keys()
+
     {:ok, conn} =
-      @xandra_mod.start_link(Keyword.take(opts, [:nodes, :protocol_version, :connect_timeout]))
+      @xandra_mod.start_link(Keyword.take(opts, allowed_opts))
 
     {keyspace, conn}
   end
