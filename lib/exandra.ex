@@ -465,7 +465,7 @@ defmodule Exandra do
     allowed_opts =
       Xandra.start_link_opts_schema()
       |> Keyword.keys()
-      |> Keyword.drop(:keyspace)
+      |> Keyword.drop([:keyspace])
 
     {:ok, conn} =
       @xandra_mod.start_link(Keyword.take(opts, allowed_opts))
